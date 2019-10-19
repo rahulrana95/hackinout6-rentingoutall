@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "babel-preset-expo": "^7.1.0",
+    "react-native-elements": "^1.2.6",
     "react-native-router-flux": "^4.0.6"
   },
   "private": true
