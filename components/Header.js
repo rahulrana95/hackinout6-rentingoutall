@@ -4,45 +4,27 @@ import {connect} from 'react-redux';
 import {Container, Header, Left, Icon, Content} from 'native-base';
 import {incrementAction, getCategoriesAction} from '../actions/home';
 import Item from './widgets/Item';
-import HeaderComponent from './Header';
-import Login from './Login';
 
-class Home extends Component {
+class HeaderComponent extends Component {
   static navigationOptions = {
-    title: 'Home',
-  };
-
-  componentDidMount() {
-    this.props.getCategories();
-  }
-
-  renderItems = () => {
-    return this.props.categoriesReducerData.map(category => {
-      return <Item category={category} key={category.id} />;
-    });
+    title: 'Header',
   };
 
   render() {
-    console.log('home');
-    console.log(this.props.loginReducer);
-    if (this.props.loginReducer.loggedIn === false) {
-      return <Login />;
-    }
-
     return (
-      <Container>
-        <HeaderComponent navigation={this.props.navigation} />
-        <Content
-          contentContainerStyle={{
-            padding: 20,
-          }}>
-          <SafeAreaView style={styles.container}>
-            <ScrollView style={styles.scrollView}>
-              {this.renderItems()}
-            </ScrollView>
-          </SafeAreaView>
+      <Header
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}>
+        <Content>
+          <Icon ios="ios-menu" android="md-menu" onPress={this.onMenuPress} />
         </Content>
-      </Container>
+        <Content>
+          <Text>Home</Text>
+        </Content>
+      </Header>
     );
   }
 
@@ -53,7 +35,6 @@ class Home extends Component {
 
 const mapStateToProps = state => ({
   categoriesReducerData: state.categoriesReducer.data,
-  loginReducer: state.loginReducer,
 });
 
 const mapDisptachToProps = dispatch => ({
@@ -64,12 +45,13 @@ const mapDisptachToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDisptachToProps,
-)(Home);
+)(HeaderComponent);
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 50,
+    color: 'white',
   },
   scrollView: {
     backgroundColor: 'pink',

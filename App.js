@@ -7,14 +7,7 @@
  */
 
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import {StyleSheet, ScrollView, View, Text, StatusBar} from 'react-native';
 
 import {
   Header,
@@ -23,22 +16,54 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import {createAppContainer} from 'react-navigation';
+import {createAppContainer, SafeAreaView} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
+import {createDrawerNavigator} from 'react-navigation-drawer';
+import {Provider} from 'react-redux';
+import store from './stores/store';
 import Home from './components/Home';
 import Profile from './components/Profile';
+import SideMenu from './components/SideMenu';
 
-const stackNavigator = createStackNavigator(
-  {
-    Home: Home,
-    Profile: Profile,
+// route config
+
+const routeConfig = {
+  Home: {
+    screen: Home,
   },
-  {
-    intialRouteName: 'Home',
+  Profile: {
+    screen: Profile,
   },
+};
+
+// const StackNavigator = createStackNavigator(routeConfig, {
+//   intialRouteName: 'Home',
+//   headerMode: 'none',
+//});
+
+const MenuConfig = createAppContainer(
+  createDrawerNavigator(routeConfig, {
+    drawerPosition: 'left',
+    contentComponent: SideMenu,
+    drawerOpenRoute: 'DrawerOpen',
+    drawerClose: 'DrawerClose',
+    drawerToggleRoute: 'DrawerToggleRoute',
+  }),
 );
 
-const appContainer = createAppContainer(stackNavigator);
+//const AppContainer = createAppContainer(StackNavigator);
+
+class App extends React.Component {
+  render() {
+    return (
+      <>
+        <Provider store={store}>
+          <MenuConfig />
+        </Provider>
+      </>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   scrollView: {
@@ -79,4 +104,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default appContainer;
+export default App;
